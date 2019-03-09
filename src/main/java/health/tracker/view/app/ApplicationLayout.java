@@ -5,6 +5,7 @@ import com.github.appreciated.app.layout.behaviour.Behaviour;
 import com.github.appreciated.app.layout.builder.AppLayoutBuilder;
 import com.github.appreciated.app.layout.builder.interfaces.NavigationElementContainer;
 import com.github.appreciated.app.layout.component.appbar.AppBarBuilder;
+import com.github.appreciated.app.layout.component.appmenu.MenuHeaderComponent;
 import com.github.appreciated.app.layout.component.appmenu.left.LeftNavigationComponent;
 import com.github.appreciated.app.layout.component.appmenu.left.builder.LeftAppMenuBuilder;
 import com.github.appreciated.app.layout.router.AppLayoutRouterLayout;
@@ -35,6 +36,7 @@ public class ApplicationLayout extends AppLayoutRouterLayout
     {
         return LeftAppMenuBuilder
                 .get()
+                .add(new MenuHeaderComponent("Health Tracker", "", "logo.jpeg"))
                 .add(new LeftNavigationComponent(ProfileView.class))
                 .add(new LeftNavigationComponent(PlanView.class))
                 .add(new LeftNavigationComponent(ProductView.class))
