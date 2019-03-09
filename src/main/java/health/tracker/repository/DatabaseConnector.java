@@ -1,16 +1,16 @@
 package health.tracker.repository;
 
-import org.springframework.stereotype.Service;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
-import java.sql.*;
-
-@Service
 public class DatabaseConnector
 {
     private static final String DRIVER_CLASS = "org.h2.Driver ";
-    private static final String JDBC_URL =  "jdbc:h2:tcp://localhost/healthtracker";
-    private static final String USER = "database_user";
-    private static final String PASSWORD = "database_password";
+    private static final String JDBC_URL =  "jdbc:h2:localhost/healthtracker";
+    private static final String USER = "";
+    private static final String PASSWORD = "";
 
     public void closeConnection(Connection connection, PreparedStatement statement)
     {

@@ -2,20 +2,20 @@ package health.tracker.repository.profile;
 
 import health.tracker.repository.DatabaseConnector;
 import health.tracker.repository.Repository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-@Service
 public class ProfileRepository implements Repository<ProfileModel>
 {
     private static final String TABLE_NAME = "profile";
-    public String ELO = "ELO";
 
-    @Autowired
     private DatabaseConnector databaseConnector;
+
+    public ProfileRepository()
+    {
+        databaseConnector = new DatabaseConnector();
+    }
 
     @Override
     public boolean save(ProfileModel profileModel)
@@ -26,13 +26,15 @@ public class ProfileRepository implements Repository<ProfileModel>
         try
         {
             connection = databaseConnector.prepareConnection();
+            System.out.println("SUCCESSFULY PREPARE CONNECTION");
+
             statement = connection.prepareStatement(insertQuery());
 
             statement.setString(1, profileModel.getName());
             statement.setDouble(2, profileModel.getAge());
             statement.setDouble(3, profileModel.getHeight());
             statement.setDouble(4, profileModel.getWeight());
-
+            System.out.println("SUCCESSFULY SET PARAMETERS");
             statement.executeUpdate();
 
 

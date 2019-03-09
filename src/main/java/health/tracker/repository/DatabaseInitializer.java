@@ -1,17 +1,17 @@
 package health.tracker.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-@Service
 public class DatabaseInitializer
 {
-    @Autowired
     private DatabaseConnector databaseConnector;
+
+    public DatabaseInitializer()
+    {
+        databaseConnector = new DatabaseConnector();
+    }
 
     @PostConstruct
     public void initializeTables()
