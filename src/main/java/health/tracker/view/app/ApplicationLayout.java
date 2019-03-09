@@ -8,9 +8,7 @@ import com.github.appreciated.app.layout.component.appbar.AppBarBuilder;
 import com.github.appreciated.app.layout.component.appmenu.left.LeftNavigationComponent;
 import com.github.appreciated.app.layout.component.appmenu.left.builder.LeftAppMenuBuilder;
 import com.github.appreciated.app.layout.router.AppLayoutRouterLayout;
-
 import com.vaadin.flow.component.page.Push;
-
 import health.tracker.view.plan.PlanView;
 import health.tracker.view.product.ProductView;
 import health.tracker.view.profile.ProfileView;
