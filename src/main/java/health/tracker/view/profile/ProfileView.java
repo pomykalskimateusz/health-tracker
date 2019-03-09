@@ -9,7 +9,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-import health.tracker.model.ProfileModel;
+import health.tracker.repository.profile.ProfileModel;
 import health.tracker.view.app.ApplicationLayout;
 
 @Caption("Profile")
@@ -33,6 +33,7 @@ public class ProfileView extends VerticalLayout
     public ProfileView()
     {
         setupComponents();
+
         add(new H1("Profile settings"));
         add(name, age, height, weight, editButton);
     }

@@ -7,7 +7,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import health.tracker.model.ProfileModel;
+import health.tracker.repository.profile.ProfileModel;
+import health.tracker.repository.profile.ProfileRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class ProfileDetailDialog extends Dialog
 {
@@ -25,6 +27,9 @@ class ProfileDetailDialog extends Dialog
     private Binder<ProfileModel> binder = new Binder<>(ProfileModel.class);
 
     private ProfileModel profileModel;
+
+    @Autowired
+    private ProfileRepository profileRepository;
 
     ProfileDetailDialog(ProfileModel profileModel)
     {
@@ -70,6 +75,8 @@ class ProfileDetailDialog extends Dialog
         HorizontalLayout horizontalLayout = new HorizontalLayout();
 
         cancelButton.addClickListener(event -> close());
+
+        saveButton.addClickListener(event -> { System.out.println(profileRepository.ELO); close(); });
 
         horizontalLayout.add(saveButton);
         horizontalLayout.add(cancelButton);

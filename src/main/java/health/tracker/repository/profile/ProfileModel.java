@@ -1,4 +1,4 @@
-package health.tracker.model;
+package health.tracker.repository.profile;
 
 public class ProfileModel
 {
