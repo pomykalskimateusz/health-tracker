@@ -1,9 +1,12 @@
 package health.tracker.repository;
 
+import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+@Component
 public class DatabaseInitializer
 {
     private DatabaseConnector databaseConnector;
@@ -16,30 +19,34 @@ public class DatabaseInitializer
     @PostConstruct
     public void initializeTables()
     {
-        System.out.println("Initialization of database.");
-
         Connection connection = null;
-        PreparedStatement createDatabaseStatement = null;
         PreparedStatement createTableStatement = null;
 
         try
         {
             connection = databaseConnector.prepareConnection();
-            createDatabaseStatement = connection.prepareStatement("CREATE DATABASE healthtracker");
-            createTableStatement = connection.prepareStatement("CREATE TABLE profile(NAME VARCHAR(255), AGE FLOAT, HEIGHT FLOAT, WEIGHT FLOAT, PRIMARY KEY (NAME))");
+            createTableStatement = connection.prepareStatement(createTableQuery());
 
-            createDatabaseStatement.executeUpdate();
             createTableStatement.executeUpdate();
-
         }
-        catch (Exception sqlException)
+        catch (Exception exception)
         {
-            System.out.println("Error something wrong during SQL connection or query execution.");
+            System.out.println("Error something wrong during SQL connection or query execution. Here is some details : \n + " + exception.getMessage());
         }
         finally
         {
-            databaseConnector.closeConnection(connection, createDatabaseStatement);
             databaseConnector.closeConnection(connection, createTableStatement);
         }
+    }
+
+    private String createTableQuery()
+    {
+        return  "CREsATE TABLE PROFILES " +
+                "(id INT AUTO_INCREMENT," +
+                " name VARCHAR(255)," +
+                " age FLOAT, " +
+                " height FLOAT, " +
+                " weight FLOAT, " +
+                " PRIMARY KEY ( id ))";
     }
 }

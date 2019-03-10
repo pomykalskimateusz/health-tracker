@@ -7,8 +7,8 @@ import java.sql.SQLException;
 
 public class DatabaseConnector
 {
-    private static final String DRIVER_CLASS = "org.h2.Driver ";
-    private static final String JDBC_URL =  "jdbc:h2:localhost/healthtracker";
+    private static final String DRIVER_CLASS = "org.h2.Driver";
+    private static final String JDBC_URL =  "jdbc:h2:mem:~/healthtracker;DB_CLOSE_DELAY=-1;";
     private static final String USER = "";
     private static final String PASSWORD = "";
 
@@ -38,7 +38,7 @@ public class DatabaseConnector
         }
     }
 
-    public Connection prepareConnection() throws Exception
+    public Connection prepareConnection() throws SQLException, ClassNotFoundException
     {
         Class.forName(DRIVER_CLASS);
 

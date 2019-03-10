@@ -2,6 +2,7 @@ package health.tracker.repository.profile;
 
 public class ProfileModel
 {
+    private Integer id;
     private String name;
     private Double age;
     private Double height;
@@ -13,6 +14,16 @@ public class ProfileModel
         setAge(age);
         setHeight(height);
         setWeight(weight);
+    }
+
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId(Integer id)
+    {
+        this.id = id;
     }
 
     public String getName()

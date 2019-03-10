@@ -5,10 +5,11 @@ import health.tracker.repository.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class ProfileRepository implements Repository<ProfileModel>
 {
-    private static final String TABLE_NAME = "profile";
+    private static final String TABLE_NAME = "profiles";
 
     private DatabaseConnector databaseConnector;
 
@@ -26,7 +27,6 @@ public class ProfileRepository implements Repository<ProfileModel>
         try
         {
             connection = databaseConnector.prepareConnection();
-            System.out.println("SUCCESSFULY PREPARE CONNECTION");
 
             statement = connection.prepareStatement(insertQuery());
 
@@ -34,17 +34,14 @@ public class ProfileRepository implements Repository<ProfileModel>
             statement.setDouble(2, profileModel.getAge());
             statement.setDouble(3, profileModel.getHeight());
             statement.setDouble(4, profileModel.getWeight());
-            System.out.println("SUCCESSFULY SET PARAMETERS");
+
             statement.executeUpdate();
 
-
-            System.out.println("SUCCESSFULLY SAVE PROFILE - " + profileModel.getName());
             return true;
         }
-        catch (Exception sqlException)
+        catch (Exception exception)
         {
-            System.out.println("Error something wrong during SQL connection or query execution.");
-
+            System.out.println("Error something wrong during SQL connection or query execution. Here is some details : \n" + exception.getMessage());
             return false;
         }
         finally
@@ -55,6 +52,6 @@ public class ProfileRepository implements Repository<ProfileModel>
 
     private String insertQuery()
     {
-        return "INSERT INTO " + TABLE_NAME + "(NAME, AGE, HEIGHT, WEIGHT) VALUES ? ? ? ?";
+        return "INSERT INTO " + TABLE_NAME + "(NAME, AGE, HEIGHT, WEIGHT) VALUES (?,?,?,?);";
     }
 }
