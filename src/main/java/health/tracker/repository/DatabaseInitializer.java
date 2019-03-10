@@ -41,7 +41,7 @@ public class DatabaseInitializer
 
     private String createTableQuery()
     {
-        return  "CREsATE TABLE PROFILES " +
+        return  "CREATE TABLE PROFILES " +
                 "(id INT AUTO_INCREMENT," +
                 " name VARCHAR(255)," +
                 " age FLOAT, " +
