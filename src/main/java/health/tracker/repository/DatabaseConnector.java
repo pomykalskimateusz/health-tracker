@@ -1,9 +1,7 @@
 package health.tracker.repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.List;
 
 public class DatabaseConnector
 {
@@ -12,19 +10,10 @@ public class DatabaseConnector
     private static final String USER = "";
     private static final String PASSWORD = "";
 
-    public void closeConnection(Connection connection, PreparedStatement statement)
+    public void closeConnection(Connection connection, List<Statement> statements)
     {
-        if(statement != null)
-        {
-            try
-            {
-                statement.close();
-            }
-            catch(SQLException exception)
-            {
-                System.out.println("Error something wrong during closing connection.");
-            }
-        }
+        statements.forEach(this::closeStatement);
+
         if(connection != null)
         {
             try
@@ -43,6 +32,21 @@ public class DatabaseConnector
         Class.forName(DRIVER_CLASS);
 
         return DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+    }
+
+    private void closeStatement(Statement statement)
+    {
+        if(statement != null)
+        {
+            try
+            {
+                statement.close();
+            }
+            catch(SQLException exception)
+            {
+                System.out.println("Error something wrong during closing connection.");
+            }
+        }
     }
 }
 

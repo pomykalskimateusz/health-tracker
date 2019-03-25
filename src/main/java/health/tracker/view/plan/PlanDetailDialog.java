@@ -1,57 +1,48 @@
-package health.tracker.view.product;
+package health.tracker.view.plan;
 
-import com.github.appreciated.app.layout.annotations.Caption;
-import com.github.appreciated.app.layout.annotations.Icon;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.Route;
 import health.tracker.repository.product.Product;
 import health.tracker.repository.product.ProductRepository;
-import health.tracker.view.app.ApplicationLayout;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Caption("Product")
-@Icon(VaadinIcon.HOME)
-@Route(value = "product", layout = ApplicationLayout.class)
-public class ProductView extends VerticalLayout
+class PlanDetailDialog extends Dialog
 {
     private TextField filterEdit = new TextField();
-    private Select<String> fieldSelect = new Select<>("Calorific", "Name");
-    private ProductDetailDialog productDetailDialog = new ProductDetailDialog(null);
-
-
-    private ProductListView productListView;
+    private Select<String> fieldSelect = new Select<>("Name", "Calorific");
     private List<Product> products;
+    private Grid<Product> productGrid = new Grid<>(Product.class);
 
-    public ProductView()
+    private Button save = new Button("Add this products");
+
+    PlanDetailDialog()
     {
+        this.setWidth("50vw");
+        productGrid.setSelectionMode(Grid.SelectionMode.MULTI);
+        productGrid.setHeightByRows(false);
+        productGrid.setMaxHeight("250px");
+
         ProductRepository productRepository = new ProductRepository();
         products = productRepository.findAll();
-
-        productListView = new ProductListView(products);
-
+        productGrid.setItems(products);
         setupFilter();
 
-        Button createButton = new Button("Create");
-        createButton.addClickListener(event -> productDetailDialog.open());
-
-        add(filterLayout(), productListView, createButton);
+        add(filterLayout(), productGrid, save);
     }
 
     private HorizontalLayout filterLayout()
     {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
 
-        horizontalLayout.add(filterEdit);
-        horizontalLayout.add(fieldSelect);
+        horizontalLayout.add(filterEdit, fieldSelect);
 
         return horizontalLayout;
     }
@@ -67,7 +58,7 @@ public class ProductView extends VerticalLayout
             @Override
             public void valueChanged(HasValue.ValueChangeEvent valueChangeEvent)
             {
-                productListView.grid.setItems(products
+                productGrid.setItems(products
                         .stream()
                         .filter(product -> assertFilter(product, valueChangeEvent.getValue().toString()))
                         .collect(Collectors.toList()));

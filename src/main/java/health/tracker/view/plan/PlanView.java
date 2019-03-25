@@ -12,5 +12,14 @@ import health.tracker.view.app.ApplicationLayout;
 @Route(value = "plan", layout = ApplicationLayout.class)
 public class PlanView extends VerticalLayout
 {
-
+    public PlanView()
+    {
+        add(new PlanListView("Monday"),
+            new PlanListView("Tuesday"),
+            new PlanListView("Wednesday"),
+            new PlanListView("Thursday"),
+            new PlanListView("Friday"),
+            new PlanListView("Saturday"),
+            new PlanListView("Sunday"));
+    }
 }

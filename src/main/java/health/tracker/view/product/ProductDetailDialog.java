@@ -1,4 +1,4 @@
-package health.tracker.view.profile;
+package health.tracker.view.product;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -8,16 +8,15 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
-import health.tracker.repository.profile.User;
-import health.tracker.repository.profile.UserRepository;
+
+import health.tracker.repository.product.Product;
+import health.tracker.repository.product.ProductRepository;
 import health.tracker.view.Components;
 
-class ProfileDetailDialog extends Dialog
+class ProductDetailDialog extends Dialog
 {
     private TextField name = new TextField("Name: ");
-    private NumberField age = new NumberField("Age: ");
-    private NumberField height = new NumberField("Height: ");
-    private NumberField weight = new NumberField("Weight: ");
+    private NumberField calorific = new NumberField("Calorific: ");
 
     private Button cancelButton = Components.cancelButton();
     private Button saveButton = Components.saveButton();
@@ -25,26 +24,23 @@ class ProfileDetailDialog extends Dialog
     private HorizontalLayout buttons = prepareButtonsLayout();
     private VerticalLayout layout = new VerticalLayout();
 
-    private Binder<User> binder = new Binder<>(User.class);
+    private Binder<Product> binder = new Binder<>(Product.class);
 
-    private User user;
-    private UserRepository userRepository;
+    private Product product;
+    private ProductRepository productRepository;
 
-    Runnable runnable;
-
-    ProfileDetailDialog(User user, Runnable runnable)
+    ProductDetailDialog(Product product)
     {
-        this.runnable = runnable;
-        this.user = user;
-        userRepository = new UserRepository();
+        this.product = product;
+        productRepository = new ProductRepository();
 
         setupBindings();
         setupComponents();
 
-        if(user == null)
-            this.user = User.empty();
-
-        binder.readBean(this.user);
+        if(product != null)
+            binder.readBean(product);
+        else
+            binder.readBean(Product.empty());
 
         add(layout);
     }
@@ -56,24 +52,16 @@ class ProfileDetailDialog extends Dialog
         name.setPlaceholder("Enter name");
         name.setWidthFull();
 
-        age.setPlaceholder("Enter age");
-        age.setWidthFull();
+        calorific.setPlaceholder("Enter calorific");
+        calorific.setWidthFull();
 
-        height.setPlaceholder("Enter height");
-        height.setWidthFull();
-
-        weight.setPlaceholder("Enter weight");
-        weight.setWidthFull();
-
-        layout.add(name, age, height, weight, buttons);
+        layout.add(name, calorific, buttons);
     }
 
     private void setupBindings()
     {
-        binder.forField(name).bind(User::getName, User::setName);
-        binder.forField(age).bind(User::getAge, User::setAge);
-        binder.forField(height).bind(User::getHeight, User::setHeight);
-        binder.forField(weight).bind(User::getWeight, User::setWeight);
+        binder.forField(name).bind("name");
+        binder.forField(calorific).bind("calorific");
     }
 
     private HorizontalLayout prepareButtonsLayout()
@@ -94,10 +82,9 @@ class ProfileDetailDialog extends Dialog
     {
         try
         {
-            binder.writeBean(user);
-            userRepository.updateById(1L, user);
+            binder.writeBean(product);
+            productRepository.save(product);
             close();
-            runnable.run();
         }
         catch (ValidationException exception)
         {
