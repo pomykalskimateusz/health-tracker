@@ -8,6 +8,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import health.tracker.repository.plan.Plan;
+import health.tracker.repository.plan.PlanRepository;
 import health.tracker.repository.product.Product;
 import health.tracker.repository.product.ProductRepository;
 
@@ -23,8 +25,15 @@ class PlanDetailDialog extends Dialog
 
     private Button save = new Button("Add this products");
 
-    PlanDetailDialog()
+    private String day;
+    private Runnable runnable;
+
+    private PlanRepository planRepository = new PlanRepository();
+
+    PlanDetailDialog(String day, Runnable runnable)
     {
+        this.runnable = runnable;
+        this.day = day;
         this.setWidth("50vw");
         productGrid.setSelectionMode(Grid.SelectionMode.MULTI);
         productGrid.setHeightByRows(false);
@@ -33,11 +42,28 @@ class PlanDetailDialog extends Dialog
         ProductRepository productRepository = new ProductRepository();
         products = productRepository.findAll();
         productGrid.setItems(products);
+
         setupFilter();
+
+        save.addClickListener(event -> {
+            productGrid.getSelectedItems().forEach(product -> {
+                planRepository.save(preparePlanFrom(product, this.day));
+            });
+            close();
+            this.runnable.run();
+        });
 
         add(filterLayout(), productGrid, save);
     }
 
+    private Plan preparePlanFrom(Product product, String day)
+    {
+        return Plan
+                .builder()
+                .day(day)
+                .productId(product.getId())
+                .build();
+    }
     private HorizontalLayout filterLayout()
     {
         HorizontalLayout horizontalLayout = new HorizontalLayout();

@@ -1,6 +1,6 @@
 package health.tracker.repository;
 
-import health.tracker.repository.product.Product;
+import health.tracker.repository.plan.PlanRepository;
 import health.tracker.repository.product.ProductRepository;
 import health.tracker.repository.profile.User;
 import health.tracker.repository.profile.UserRepository;
@@ -10,18 +10,15 @@ import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class DatabaseInitializer
 {
     private DatabaseConnector databaseConnector;
-    private ProductRepository productRepository;
     private UserRepository userRepository;
 
     public DatabaseInitializer()
     {
-        productRepository = new ProductRepository();
         userRepository = new UserRepository();
         databaseConnector = new DatabaseConnector();
     }
@@ -32,6 +29,7 @@ public class DatabaseInitializer
         Connection connection = null;
         PreparedStatement userTableStatement = null;
         PreparedStatement productTableStatement = null;
+        PreparedStatement planTableStatement = null;
 
         try
         {
@@ -39,8 +37,10 @@ public class DatabaseInitializer
 
             userTableStatement = connection.prepareStatement(createUserTable());
             productTableStatement = connection.prepareStatement(createProductTable());
+            planTableStatement = connection.prepareStatement(createPlanTable());
 
             productTableStatement.executeUpdate();
+            planTableStatement.executeUpdate();
             userTableStatement.executeUpdate();
         }
         catch (Exception exception)
@@ -49,11 +49,10 @@ public class DatabaseInitializer
         }
         finally
         {
-            databaseConnector.closeConnection(connection, Arrays.asList(userTableStatement, productTableStatement));
+            databaseConnector.closeConnection(connection, Arrays.asList(userTableStatement, productTableStatement, planTableStatement));
         }
 
         userRepository.save(emptyUser());
-        prepareProductList().forEach(productRepository::save);
     }
 
     private String createUserTable()
@@ -76,26 +75,14 @@ public class DatabaseInitializer
                 " PRIMARY KEY ( id ))";
     }
 
-    private List<Product> prepareProductList()
+    private String createPlanTable()
     {
-        return Arrays.asList
-                (
-                    prepareProduct("Jablko"),
-                    prepareProduct("Szynka"),
-                    prepareProduct("Kurczak"),
-                    prepareProduct("Bułka"),
-                    prepareProduct("Jajko"),
-                    prepareProduct("Ser")
-                );
-    }
-
-    private Product prepareProduct(String name)
-    {
-        return Product
-                .builder()
-                .name(name)
-                .calorific(Math.random())
-                .build();
+        return "CREATE TABLE " + PlanRepository.TABLE_NAME +
+                " (id LONG AUTO_INCREMENT, " +
+                " day VARCHAR(255), " +
+                " productId LONG, " +
+                " PRIMARY KEY ( id ), " +
+                " FOREIGN KEY (productId) REFERENCES PRODUCTS(id));";
     }
 
     private User emptyUser()

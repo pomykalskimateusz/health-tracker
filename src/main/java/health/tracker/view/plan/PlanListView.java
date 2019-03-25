@@ -5,29 +5,33 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-
+import health.tracker.repository.plan.PlanRepository;
 import health.tracker.repository.product.Product;
-
-import java.util.Collections;
-import java.util.List;
 
 class PlanListView extends VerticalLayout
 {
     private Grid<Product> grid = new Grid<>(Product.class);
     private Button create = new Button("Add product");
     private Button delete = new Button("Delete product");
-    private PlanDetailDialog planDetailDialog = new PlanDetailDialog();
+    private PlanDetailDialog planDetailDialog;
+
+    private PlanRepository planRepository = new PlanRepository();
+
+    private String day;
 
     PlanListView(String day)
     {
+        this.day = day;
+        planDetailDialog = new PlanDetailDialog(day, reloadData());
         setupButtons();
 
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        grid.setItems(fakeProducts());
         grid.setHeightByRows(true);
         grid.setMinHeight("120px");
         grid.setMaxHeight("300px");
 
+        reloadData().run();
+        planRepository.findProductsFor(day).forEach(plan -> System.out.println(plan.toString()));
         add(new H3(day.toUpperCase()), grid, buttonsLayout());
     }
 
@@ -46,13 +50,13 @@ class PlanListView extends VerticalLayout
         create.addClickListener(event -> planDetailDialog.open());
     }
 
-    private List<Product> fakeProducts()
+    private Runnable reloadData()
     {
-        return Collections.singletonList(Product
-                .builder()
-                .id(1L)
-                .name("Apple")
-                .calorific(12.3)
-                .build());
+        return new Runnable() {
+            @Override
+            public void run() {
+                grid.setItems(planRepository.findProductsFor(day));
+            }
+        };
     }
 }
