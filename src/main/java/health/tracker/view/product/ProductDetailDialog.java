@@ -26,21 +26,20 @@ class ProductDetailDialog extends Dialog
 
     private Binder<Product> binder = new Binder<>(Product.class);
 
-    private Product product;
+    private Product product = Product.empty();
     private ProductRepository productRepository;
 
-    ProductDetailDialog(Product product)
+    private Runnable runnable;
+
+    ProductDetailDialog(Runnable runnable)
     {
-        this.product = product;
+        this.runnable = runnable;
         productRepository = new ProductRepository();
 
         setupBindings();
         setupComponents();
 
-        if(product != null)
-            binder.readBean(product);
-        else
-            binder.readBean(Product.empty());
+        binder.readBean(this.product);
 
         add(layout);
     }
@@ -60,8 +59,8 @@ class ProductDetailDialog extends Dialog
 
     private void setupBindings()
     {
-        binder.forField(name).bind("name");
-        binder.forField(calorific).bind("calorific");
+        binder.forField(name).bind(Product::getName, Product::setName);
+        binder.forField(calorific).bind(Product::getCalorific, Product::setCalorific);
     }
 
     private HorizontalLayout prepareButtonsLayout()
@@ -85,6 +84,7 @@ class ProductDetailDialog extends Dialog
             binder.writeBean(product);
             productRepository.save(product);
             close();
+            runnable.run();
         }
         catch (ValidationException exception)
         {

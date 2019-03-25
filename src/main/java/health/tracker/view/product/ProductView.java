@@ -25,14 +25,18 @@ public class ProductView extends VerticalLayout
 {
     private TextField filterEdit = new TextField();
     private Select<String> fieldSelect = new Select<>("Calorific", "Name");
-    private ProductDetailDialog productDetailDialog = new ProductDetailDialog(null);
+    private ProductDetailDialog productDetailDialog;
+    private Button createButton = new Button("Create");
+    private Button deleteButton = new Button("Delete");
 
+    private ProductRepository productRepository = new ProductRepository();
 
     private ProductListView productListView;
     private List<Product> products;
 
     public ProductView()
     {
+        productDetailDialog = new ProductDetailDialog(reloadData());
         ProductRepository productRepository = new ProductRepository();
         products = productRepository.findAll();
 
@@ -40,10 +44,27 @@ public class ProductView extends VerticalLayout
 
         setupFilter();
 
-        Button createButton = new Button("Create");
         createButton.addClickListener(event -> productDetailDialog.open());
 
-        add(filterLayout(), productListView, createButton);
+        deleteButton.addClickListener(event -> {
+            if(!productListView.grid.getSelectedItems().isEmpty()) {
+                productListView.grid.getSelectedItems().forEach(productRepository::delete);
+                productListView.grid.setItems(productRepository.findAll());
+            }
+        });
+
+        productListView.grid.addSelectionListener(event -> deleteButton.setEnabled(true));
+
+        add(filterLayout(), productListView, buttonsLayout());
+    }
+
+    private HorizontalLayout buttonsLayout()
+    {
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+
+        horizontalLayout.add(createButton, deleteButton);
+
+        return horizontalLayout;
     }
 
     private HorizontalLayout filterLayout()
@@ -90,5 +111,15 @@ public class ProductView extends VerticalLayout
             default:
                 return false;
         }
+    }
+
+    private Runnable reloadData()
+    {
+        return new Runnable() {
+            @Override
+            public void run() {
+                productListView.grid.setItems(productRepository.findAll());
+            }
+        };
     }
 }

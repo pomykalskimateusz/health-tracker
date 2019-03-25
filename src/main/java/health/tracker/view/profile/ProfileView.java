@@ -35,11 +35,9 @@ public class ProfileView extends VerticalLayout
     public ProfileView()
     {
         User user = userRepository.findById(1L);
-        profileDetailDialog = new ProfileDetailDialog(user,reloadData());
+        profileDetailDialog = new ProfileDetailDialog(user, reloadData());
 
         setupComponents(user);
-
-//        add(new H1("User settings"));
 
         HorizontalLayout mainLayout = new HorizontalLayout();
         mainLayout.add(formLayout(), plainTextLayout());

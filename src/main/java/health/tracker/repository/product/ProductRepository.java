@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ProductRepository // implements Repository<Product>
+public class ProductRepository
 {
     public static final String TABLE_NAME = "PRODUCTS";
 
@@ -18,7 +18,6 @@ public class ProductRepository // implements Repository<Product>
         databaseConnector = new DatabaseConnector();
     }
 
-   // @Override
     public boolean save(Product product)
     {
         Connection connection = null;
@@ -48,7 +47,6 @@ public class ProductRepository // implements Repository<Product>
         }
     }
 
-   // @Override
     public List<Product> findAll()
     {
         Connection connection = null;
@@ -91,6 +89,32 @@ public class ProductRepository // implements Repository<Product>
         }
     }
 
+    public boolean delete(Product product)
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try
+        {
+            connection = databaseConnector.prepareConnection();
+
+            statement = connection.prepareStatement(deleteByIdQuery(product.getId()));
+
+            statement.executeUpdate();
+
+            return true;
+        }
+        catch (Exception exception)
+        {
+            System.out.println("Error something wrong during SQL connection or query execution. Here is some details : \n" + exception.getMessage());
+            return false;
+        }
+        finally
+        {
+            databaseConnector.closeConnection(connection, Collections.singletonList(statement));
+        }
+    }
+
     private String insertQuery()
     {
         return "INSERT INTO " + TABLE_NAME + "(NAME, CALORIFIC) VALUES (?,?);";
@@ -99,5 +123,10 @@ public class ProductRepository // implements Repository<Product>
     private String selectQuery()
     {
         return "SELECT * FROM " + TABLE_NAME + ";";
+    }
+
+    private String deleteByIdQuery(Long id)
+    {
+        return "DELETE FROM " + TABLE_NAME + " WHERE id = " + id + ";";
     }
 }
