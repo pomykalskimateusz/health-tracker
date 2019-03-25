@@ -87,6 +87,32 @@ public class PlanRepository
         }
     }
 
+    public boolean delete(Long productId, String day)
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try
+        {
+            connection = databaseConnector.prepareConnection();
+
+            statement = connection.prepareStatement(deleteByIdQuery(productId, day));
+
+            statement.executeUpdate();
+
+            return true;
+        }
+        catch (Exception exception)
+        {
+            System.out.println("Error something wrong during SQL connection or query execution. Here is some details : \n" + exception.getMessage());
+            return false;
+        }
+        finally
+        {
+            databaseConnector.closeConnection(connection, Collections.singletonList(statement));
+        }
+    }
+
     private String insertQuery(Plan plan)
     {
         return "INSERT INTO " + TABLE_NAME + "(day, productId) VALUES ('" + plan.getDay() + "', " +  plan.getProductId() + ");";
@@ -98,5 +124,10 @@ public class PlanRepository
                 " FROM PLANS " +
                 " INNER JOIN PRODUCTS " +
                 " ON PLANS.productId=PRODUCTS.id WHERE PLANS.day='"+ day +"';";
+    }
+
+    private String deleteByIdQuery(Long id, String day)
+    {
+        return "DELETE FROM " + TABLE_NAME + " WHERE productId=" + id + " AND day='"+day+"';";
     }
 }

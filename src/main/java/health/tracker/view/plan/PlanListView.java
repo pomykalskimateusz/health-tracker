@@ -45,9 +45,12 @@ class PlanListView extends VerticalLayout
 
     private void setupButtons()
     {
-        delete.setEnabled(false);
-
         create.addClickListener(event -> planDetailDialog.open());
+
+        delete.addClickListener(event -> {
+            grid.getSelectedItems().forEach(product -> planRepository.delete(product.getId(), day));
+            reloadData().run();
+        });
     }
 
     private Runnable reloadData()
