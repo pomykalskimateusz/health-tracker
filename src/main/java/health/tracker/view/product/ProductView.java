@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Caption("Product")
-@Icon(VaadinIcon.HOME)
+@Icon(VaadinIcon.PACKAGE)
 @Route(value = "product", layout = ApplicationLayout.class)
 public class ProductView extends VerticalLayout
 {

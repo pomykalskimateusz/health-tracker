@@ -8,7 +8,7 @@ import com.vaadin.flow.router.Route;
 import health.tracker.view.app.ApplicationLayout;
 
 @Caption("Plan")
-@Icon(VaadinIcon.HOME)
+@Icon(VaadinIcon.ABACUS)
 @Route(value = "plan", layout = ApplicationLayout.class)
 public class PlanView extends VerticalLayout
 {

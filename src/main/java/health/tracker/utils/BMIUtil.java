@@ -4,7 +4,7 @@ public class BMIUtil
 {
     public static Double calculateBMI(Double height, Double weight)
     {
-        return weight/(height*height);
+        return weight/((height/100)*(height/100));
     }
 
     public static String interpretationBMI(Double bmi)
