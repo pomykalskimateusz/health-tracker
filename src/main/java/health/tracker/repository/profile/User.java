@@ -14,6 +14,7 @@ public class User
     private Double age;
     private Double height;
     private Double weight;
+    private boolean isFemale;
 
     public static User empty()
     {
@@ -23,6 +24,7 @@ public class User
                 .age(0d)
                 .height(0d)
                 .weight(0d)
+                .isFemale(true)
                 .build();
     }
 }

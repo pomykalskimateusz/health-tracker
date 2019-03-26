@@ -31,6 +31,7 @@ public class UserRepository
             statement.setDouble(2, user.getAge());
             statement.setDouble(3, user.getHeight());
             statement.setDouble(4, user.getWeight());
+            statement.setBoolean(5, user.isFemale());
 
             statement.executeUpdate();
 
@@ -70,6 +71,7 @@ public class UserRepository
                         .age(resultSet.getDouble("age"))
                         .height(resultSet.getDouble("height"))
                         .weight(resultSet.getDouble("weight"))
+                        .isFemale(resultSet.getBoolean("isFemale"))
                         .build();
             }
 
@@ -120,7 +122,7 @@ public class UserRepository
 
     private String insertQuery()
     {
-        return "INSERT INTO " + TABLE_NAME + "(NAME, AGE, HEIGHT, WEIGHT) VALUES (?,?,?,?);";
+        return "INSERT INTO " + TABLE_NAME + "(NAME, AGE, HEIGHT, WEIGHT, isFemale) VALUES (?,?,?,?,?);";
     }
 
     private String getByIdQuery(Long id)
@@ -135,6 +137,7 @@ public class UserRepository
                 ", age = '" + user.getAge() + "'" +
                 ", height = '" + user.getHeight() + "'" +
                 ", weight = '" + user.getWeight() + "'" +
+                ", isFemale = " + user.isFemale()  +
                 " WHERE id = " + id + ";";
     }
 }

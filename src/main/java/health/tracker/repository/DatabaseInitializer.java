@@ -63,6 +63,7 @@ public class DatabaseInitializer
                 " age FLOAT, " +
                 " height FLOAT, " +
                 " weight FLOAT, " +
+                " isFemale BOOLEAN, " +
                 " PRIMARY KEY ( id ))";
     }
 
@@ -93,6 +94,7 @@ public class DatabaseInitializer
                 .weight(0.0)
                 .height(0.0)
                 .age(0.0)
+                .isFemale(true)
                 .build();
     }
 }

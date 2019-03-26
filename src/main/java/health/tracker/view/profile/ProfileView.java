@@ -13,6 +13,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import health.tracker.repository.profile.User;
 import health.tracker.repository.profile.UserRepository;
+import health.tracker.utils.BMIUtil;
 import health.tracker.view.Components;
 import health.tracker.view.app.ApplicationLayout;
 
@@ -31,10 +32,13 @@ public class ProfileView extends VerticalLayout
     private UserRepository userRepository = new UserRepository();
 
     private ProfileDetailDialog profileDetailDialog;
+    private User user;
+    private Double bmi;
 
     public ProfileView()
     {
-        User user = userRepository.findById(1L);
+        user = userRepository.findById(1L);
+        bmi = BMIUtil.calculateBMI(user.getHeight(), user.getWeight());
         profileDetailDialog = new ProfileDetailDialog(user, reloadData());
 
         setupComponents(user);
@@ -89,11 +93,21 @@ public class ProfileView extends VerticalLayout
     {
         VerticalLayout verticalLayout = new VerticalLayout();
 
-        verticalLayout.add(new H1("Some theory"));
-        verticalLayout.add(new Label(THEORY_PLAIN_TEXT));
+        verticalLayout.add(new H1("Basal Metabolic Rate and Body Mass Index"));
+
+        if(user.getWeight() != 0 && user.getHeight() != 0) {
+            verticalLayout.add(new Label("Your BMI rate : " + bmi));
+            verticalLayout.add(new Label("Your BMI classification : " + BMIUtil.interpretationBMI(bmi)));
+        }
+
+        verticalLayout.add(new Label("Body mass index (BMI) is a value derived from the mass (weight) and height of an individual. \n" +
+        "It's used to categorize that person as underweight, normal weight, overweight, or obese based on that value."));
+
+        verticalLayout.add(new Label("Basal metabolic rate (BMR) is the rate of energy expenditure per unit time. \n" +
+        "There are several ways to calculate BMR rate. In this application BMR is separated gender. Below there are used patterns : \n"));
+        verticalLayout.add(new Label("- female pattern : 655 + [9,6 x masa ciała (kg)] + [1,8 x wzrost (cm)] - [4,7 x wiek (lata)] \n"));
+        verticalLayout.add(new Label("- male pattern : 66 + [13,7 x masa ciała (kg)] + [5 x wzrost (cm)] - [6,76 x wiek (lata)]"));
 
         return verticalLayout;
     }
-
-    private final String THEORY_PLAIN_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ullamcorper commodo feugiat. Proin in elit suscipit, faucibus mi eget, vestibulum felis. Donec placerat faucibus nunc id interdum. Quisque vel fringilla turpis. Etiam a odio a libero lobortis dignissim a sit amet enim. Sed vel lorem ante. Donec tincidunt, massa ut convallis congue, ante arcu tincidunt risus, in fringilla ex augue tempor urna. Morbi sodales eros quis augue sollicitudin, in ultricies nulla rhoncus. Nulla in tincidunt mi, id tempus eros. Sed at lorem urna. In a aliquet ante, sed scelerisque arcu. Nulla tempor vehicula nibh eu placerat. Phasellus feugiat congue est, quis suscipit odio finibus sit amet. Duis ac neque eget est pulvinar viverra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.";
 }

@@ -1,6 +1,7 @@
 package health.tracker.view.profile;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -22,6 +23,9 @@ class ProfileDetailDialog extends Dialog
     private Button cancelButton = Components.cancelButton();
     private Button saveButton = Components.saveButton();
 
+    private Checkbox isFemaleCheckbox = new Checkbox("Female");
+    private Checkbox isMaleCheckbox = new Checkbox("Male");
+
     private HorizontalLayout buttons = prepareButtonsLayout();
     private VerticalLayout layout = new VerticalLayout();
 
@@ -40,6 +44,7 @@ class ProfileDetailDialog extends Dialog
 
         setupBindings();
         setupComponents();
+        setupCheckbox();
 
         if(user == null)
             this.user = User.empty();
@@ -65,7 +70,7 @@ class ProfileDetailDialog extends Dialog
         weight.setPlaceholder("Enter weight");
         weight.setWidthFull();
 
-        layout.add(name, age, height, weight, buttons);
+        layout.add(name, age, height, weight, checkboxLayout(), buttons);
     }
 
     private void setupBindings()
@@ -95,6 +100,7 @@ class ProfileDetailDialog extends Dialog
         try
         {
             binder.writeBean(user);
+            setGender();
             userRepository.updateById(1L, user);
             close();
             runnable.run();
@@ -103,5 +109,47 @@ class ProfileDetailDialog extends Dialog
         {
             System.out.println("Error something wrong during catching model from binder.");
         }
+    }
+
+    private void setGender()
+    {
+        if(isFemaleCheckbox.getValue())
+            user.setFemale(true);
+        else
+            user.setFemale(false);
+    }
+
+    private HorizontalLayout checkboxLayout()
+    {
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(isFemaleCheckbox, isMaleCheckbox);
+
+        return horizontalLayout;
+    }
+
+    private void setupCheckbox()
+    {
+        if(user.isFemale())
+            isFemaleCheckbox.setValue(true);
+        else
+            isMaleCheckbox.setValue(true);
+
+        isFemaleCheckbox.addValueChangeListener(event -> {
+            if(isFemaleCheckbox.getValue()) {
+                isMaleCheckbox.setValue(false);
+            }
+            else {
+                isMaleCheckbox.setValue(true);
+            }
+        });
+
+        isMaleCheckbox.addValueChangeListener(event -> {
+            if(isMaleCheckbox.getValue()) {
+                isFemaleCheckbox.setValue(false);
+            }
+            else {
+                isFemaleCheckbox.setValue(true);
+            }
+        });
     }
 }
