@@ -19,6 +19,10 @@ public class PlanRepository
         databaseConnector = new DatabaseConnector();
     }
 
+    /**
+     * @param plan - Plan param, model which is saved
+     * @return boolean - true or false, depends on failure during execute connection to database
+     */
     public boolean save(Plan plan)
     {
         Connection connection = null;
@@ -45,6 +49,10 @@ public class PlanRepository
         }
     }
 
+    /**
+     * @param day - String param, which determine specific day
+     * @return List - list of products for specific day for hardcoded user.
+     */
     public List<Product> findProductsFor(String day)
     {
         Connection connection = null;
@@ -87,6 +95,11 @@ public class PlanRepository
         }
     }
 
+    /**
+     * @param productId - Long param, which determine product by id
+     * @param day - String param, which determine from which day list should remove product
+     * @return boolean - true or false, depends on failure during execute connection to database
+     */
     public boolean delete(Long productId, String day)
     {
         Connection connection = null;

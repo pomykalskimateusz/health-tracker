@@ -57,12 +57,18 @@ class ProductDetailDialog extends Dialog
         layout.add(name, calorific, buttons);
     }
 
+    /**
+     * Method which setup bindings for our model read from form
+     */
     private void setupBindings()
     {
         binder.forField(name).bind(Product::getName, Product::setName);
         binder.forField(calorific).bind(Product::getCalorific, Product::setCalorific);
     }
 
+    /**
+     * Method - horizontal layout which contain configured buttons
+     */
     private HorizontalLayout prepareButtonsLayout()
     {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -77,6 +83,9 @@ class ProductDetailDialog extends Dialog
         return horizontalLayout;
     }
 
+    /**
+     * Method which configure saveButton listener
+     */
     private void saveButtonListener()
     {
         try

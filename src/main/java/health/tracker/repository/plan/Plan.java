@@ -12,14 +12,4 @@ public class Plan
     private Long id;
     private String day;
     private Long productId;
-
-    public static Plan empty()
-    {
-        return Plan
-                .builder()
-                .id(0L)
-                .day("")
-                .productId(0L)
-                .build();
-    }
 }

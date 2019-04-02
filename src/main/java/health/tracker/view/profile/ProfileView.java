@@ -49,6 +49,9 @@ public class ProfileView extends VerticalLayout
         add(mainLayout);
     }
 
+    /**
+     * Method which configure basic properties for each form field
+     */
     private void setupComponents(User user)
     {
         name.setWidth("20vw");
@@ -80,6 +83,9 @@ public class ProfileView extends VerticalLayout
         };
     }
 
+    /**
+     * Method which return VerticalLayout with form
+     */
     private VerticalLayout formLayout()
     {
         VerticalLayout verticalLayout = new VerticalLayout();
@@ -89,6 +95,9 @@ public class ProfileView extends VerticalLayout
         return verticalLayout;
     }
 
+    /**
+     * Method which return VerticalLayout with simple text information about rates used in application
+     */
     private VerticalLayout plainTextLayout()
     {
         VerticalLayout verticalLayout = new VerticalLayout();

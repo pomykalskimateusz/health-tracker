@@ -58,6 +58,9 @@ public class ProductView extends VerticalLayout
         add(filterLayout(), productListView, buttonsLayout());
     }
 
+    /**
+     * @return HorizontalLayout which contain buttons
+     */
     private HorizontalLayout buttonsLayout()
     {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -67,6 +70,9 @@ public class ProductView extends VerticalLayout
         return horizontalLayout;
     }
 
+    /**
+     * @return HorizontalLayout which contain filter fields
+     */
     private HorizontalLayout filterLayout()
     {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -77,6 +83,9 @@ public class ProductView extends VerticalLayout
         return horizontalLayout;
     }
 
+    /**
+     * Method which setup filter properties and configure value change listener in filterEdit filed
+     */
     private void setupFilter()
     {
         filterEdit.setLabel("Filter :");
@@ -113,6 +122,9 @@ public class ProductView extends VerticalLayout
         }
     }
 
+    /**
+     * Method which reload our data in grid layout.
+     */
     private Runnable reloadData()
     {
         return new Runnable() {

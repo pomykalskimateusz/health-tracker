@@ -23,6 +23,10 @@ public class DatabaseInitializer
         databaseConnector = new DatabaseConnector();
     }
 
+    /**
+     * Method to initialize tables, which are necessary for correct work.
+     * User table, Plan table, Product table are initialized here.
+     */
     @PostConstruct
     public void initializeTables()
     {

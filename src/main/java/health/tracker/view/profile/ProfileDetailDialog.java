@@ -54,6 +54,9 @@ class ProfileDetailDialog extends Dialog
         add(layout);
     }
 
+    /**
+     * Method which configure basic properties for each form field
+     */
     private void setupComponents()
     {
         this.setWidth("50vw");
@@ -72,7 +75,9 @@ class ProfileDetailDialog extends Dialog
 
         layout.add(name, age, height, weight, checkboxLayout(), buttons);
     }
-
+    /**
+     * Method which setup bindings for our model read from form
+     */
     private void setupBindings()
     {
         binder.forField(name).bind(User::getName, User::setName);
@@ -81,6 +86,9 @@ class ProfileDetailDialog extends Dialog
         binder.forField(weight).bind(User::getWeight, User::setWeight);
     }
 
+    /**
+     * Method - horizontal layout which contain configured buttons
+     */
     private HorizontalLayout prepareButtonsLayout()
     {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -95,6 +103,9 @@ class ProfileDetailDialog extends Dialog
         return horizontalLayout;
     }
 
+    /**
+     * Method which configure saveButton listener
+     */
     private void saveButtonListener()
     {
         try
@@ -119,6 +130,9 @@ class ProfileDetailDialog extends Dialog
             user.setFemale(false);
     }
 
+    /**
+     * Method - horizontal layout which contain checkboxes for determine gender
+     */
     private HorizontalLayout checkboxLayout()
     {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -127,6 +141,9 @@ class ProfileDetailDialog extends Dialog
         return horizontalLayout;
     }
 
+    /**
+     * Method which configure checkboxes behavior and listeners
+     */
     private void setupCheckbox()
     {
         if(user.isFemale())

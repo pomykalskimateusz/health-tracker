@@ -16,6 +16,10 @@ public class UserRepository
         databaseConnector = new DatabaseConnector();
     }
 
+    /**
+     * @param user - User param, model which is saved
+     * @return boolean - true or false, depends on failure during execute connection to database
+     */
     public boolean save(User user)
     {
         Connection connection = null;
@@ -48,6 +52,10 @@ public class UserRepository
         }
     }
 
+    /**
+     * @param id - Long param, which determine id to find user in database
+     * @return User - user from database if there are not any failures or empty user if there are some failures
+     */
     public User findById(Long id)
     {
         Connection connection = null;
@@ -94,6 +102,11 @@ public class UserRepository
         }
     }
 
+    /**
+     * @param id - Long param, which determine id to find user in database
+     * @param user - User param, which determine changes to update
+     * @return boolean - true or false, depends on failure during execute connection to database
+     */
     public boolean updateById(Long id, User user)
     {
         Connection connection = null;

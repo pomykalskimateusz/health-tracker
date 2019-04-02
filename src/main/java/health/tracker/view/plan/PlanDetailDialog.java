@@ -64,6 +64,10 @@ class PlanDetailDialog extends Dialog
                 .productId(product.getId())
                 .build();
     }
+
+    /**
+     * @return HorizontalLayout which contain filter fields
+     */
     private HorizontalLayout filterLayout()
     {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -73,6 +77,9 @@ class PlanDetailDialog extends Dialog
         return horizontalLayout;
     }
 
+    /**
+     * Method which setup filter properties and configure value change listener in filterEdit filed
+     */
     private void setupFilter()
     {
         filterEdit.setLabel("Filter :");
@@ -96,6 +103,11 @@ class PlanDetailDialog extends Dialog
         fieldSelect.setPlaceholder("Select field");
     }
 
+    /**
+     * @param product - actually checked product from list
+     * @param filterValue - value which we are looking for
+     * @return boolean - depends if product contain specific filterValue
+     */
     private boolean assertFilter(Product product, String filterValue)
     {
         switch (fieldSelect.getValue())

@@ -55,7 +55,9 @@ class PlanListView extends VerticalLayout
 
         add(new H3(day.toUpperCase()), grid, buttonsLayout());
     }
-
+    /**
+     * @return HorizontalLayout which contain buttons
+     */
     private HorizontalLayout buttonsLayout()
     {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -64,6 +66,9 @@ class PlanListView extends VerticalLayout
         return horizontalLayout;
     }
 
+    /**
+     * Method which setup buttons configuration such as click listeners
+     */
     private void setupButtons()
     {
         create.addClickListener(event -> planDetailDialog.open());
@@ -74,6 +79,9 @@ class PlanListView extends VerticalLayout
         });
     }
 
+    /**
+     * Method which reload our data in grid layout.
+     */
     private Runnable reloadData()
     {
         return new Runnable() {
@@ -84,6 +92,10 @@ class PlanListView extends VerticalLayout
         };
     }
 
+    /**
+     * @param products - list of products
+     * @return Double - summed up calorific of all products
+     */
     private Double currentCalorific(List<Product> products)
     {
         return products
@@ -93,6 +105,9 @@ class PlanListView extends VerticalLayout
                 .orElse( 0d);
     }
 
+    /**
+     * Method which map calorific to user friendly information
+     */
     private void setCalorificLabel()
     {
         if(user.getHeight() != 0 && user.getWeight() != 0 && user.getAge() != 0)

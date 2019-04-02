@@ -18,6 +18,10 @@ public class ProductRepository
         databaseConnector = new DatabaseConnector();
     }
 
+    /**
+     * @param product - Product param, model which is saved
+     * @return boolean - true or false, depends on failure during execute connection to database
+     */
     public boolean save(Product product)
     {
         Connection connection = null;
@@ -47,6 +51,9 @@ public class ProductRepository
         }
     }
 
+    /**
+     * @return List - list of all products available in database
+     */
     public List<Product> findAll()
     {
         Connection connection = null;
@@ -89,6 +96,10 @@ public class ProductRepository
         }
     }
 
+    /**
+     * @param product - Product param, which determine product to delete
+     * @return boolean - true or false, depends on failure during execute connection to database
+     */
     public boolean delete(Product product)
     {
         Connection connection = null;
