@@ -1,0 +1,1 @@
+Build docker image using: `sudo docker build https://github.com/pomykalskimateusz/health-tracker.git`
