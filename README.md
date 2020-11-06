@@ -1,3 +1,7 @@
-Proces budowania obrazu mozemy wykonac za pomoca polecenia:
-	`docker build https://github.com/pomykalskimateusz/health-tracker.git`.
-Wykonanie tej komendy nie wymaga jawnego klonowania projektu. Pomimo, ze nie widzimy tego, projekt zostaje sklonowany do katalogu `/tmp`, ktory przechowuje pliki tymczasowe. Nastepnie z poziomu katalogu glownego projektu zostaje wywolane polecenie budowy obrazu.
+Automatyczna budowa obrazu na Docker Hub nastepuje w dwoch przypadkach:
+- wykonaniu zmian bezposrednio w obrazie i wrzuceniu ich do reposytorium docker hub za pomoca polecenia: `docker push mati96/health-tracker:tagname`
+- wykonaniu zmian w kodzie zrodlowym projektu i wrzuceniu ich do repozytorium github za pomoca polecenia: `git push origin master` (po uprzednim zrobieniu commita). Docker hub automatycznie wykryje zmiany i przebuduje obraz.
+
+Pobranie obrazu na lokalna maszyne mozemy wykonac na dwa sposoby:
+- wykorzystujac repozytorium Docker Hub: `docker pull mati96/health-tracker`
+- uzywajac bezposrednio repozytorium Github: `docker build https://github.com/pomykalskimateusz/health-tracker.git`
